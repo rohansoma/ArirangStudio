@@ -81,6 +81,7 @@ async function loadHaegeumSample() {
 const jangguSamples = {
     kung: { buffer: null, isLoaded: false },
     duk: { buffer: null, isLoaded: false },
+    gideok: { buffer: null, isLoaded: false },
     tak: { buffer: null, isLoaded: false },
     tta: { buffer: null, isLoaded: false },
     roll: { buffer: null, isLoaded: false }
@@ -95,6 +96,7 @@ async function loadJangguSamples() {
         const sampleFiles = {
             kung: 'sounds/kung.mp3',
             duk: 'sounds/duk.mp3',
+            gideok: 'sounds/gideok.mp3',
             tak: 'sounds/tak.mp3',
             tta: 'sounds/tta.mp3',
             roll: 'sounds/roll.mp3'
@@ -146,8 +148,9 @@ const activeNotes = {
 function initAudioContext() {
     if (!audioContext) {
         const AudioContextClass = window.AudioContext || window['webkitAudioContext'];
-        audioContext = new AudioContextClass();
-        console.log('🎵 Audio context initialized');
+        // Force standard sample rate for consistent recording/playback
+        audioContext = new AudioContextClass({ sampleRate: 44100 });
+        console.log('🎵 Audio context initialized at 44100 Hz');
     }
     if (audioContext.state === 'suspended') {
         audioContext.resume();
@@ -292,7 +295,7 @@ function createJangguSound(soundType) {
     const now = audioContext.currentTime;
 
     // Check if we have a sample for this sound
-    if (['kung', 'duk', 'tak', 'tta', 'roll'].includes(soundType) && jangguSamples[soundType]?.isLoaded) {
+    if (['kung', 'duk', 'gideok', 'tak', 'tta', 'roll'].includes(soundType) && jangguSamples[soundType]?.isLoaded) {
         const source = audioContext.createBufferSource();
         source.buffer = jangguSamples[soundType].buffer;
 
@@ -761,9 +764,8 @@ const recordings = {
 };
 
 function getRecordingDestination() {
-    if (!recordingDestination) {
-        recordingDestination = audioContext.createMediaStreamDestination();
-    }
+    // Always create a fresh destination to avoid sample rate issues
+    recordingDestination = audioContext.createMediaStreamDestination();
     return recordingDestination;
 }
 
@@ -827,11 +829,14 @@ async function playRecording(instrument) {
 
             const source = audioContext.createBufferSource();
             source.buffer = audioBuffer;
+            // Explicitly set playback rate to 1.0 for normal speed
+            source.playbackRate.value = 1.0;
             source.connect(audioContext.destination);
             source.start(0);
         } catch (e) {
             // Fallback to Audio element
             const audio = new Audio(URL.createObjectURL(rec.blob));
+            audio.playbackRate = 1.0;
             audio.play();
         }
     }
