@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arirang Studio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Arirang Studio</div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-page="piri">Piri (피리)</button>
+            <button class="nav-btn" data-page="haegeum">Haegeum (해금)</button>
+            <button class="nav-btn" data-page="janggu">Janggu (장구)</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        <!-- Piri Page -->
+        <section id="piri-page" class="page active">
+            <h1>Piri (피리) - Korean Bamboo Flute</h1>
+            <p class="description">Click buttons or use keyboard keys to play. Multiple keys can be played simultaneously.</p>
+
+            <div class="keyboard-guide">
+                <h3>Keyboard Mapping</h3>
+                <div class="key-info">A S D F G H J K = Notes (C4 to C5)</div>
+            </div>
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <!-- Metronome -->
+                <div class="metronome-section">
+                    <button class="metronome-btn" id="piri-metronome-toggle">
+                        <span class="play-icon">▶</span>
+                        <span class="stop-icon" style="display:none">■</span>
+                    </button>
+                    <div class="tempo-control">
+                        <input type="number" class="tempo-input" min="40" max="240" value="120">
+                        <span class="bpm-label">BPM</span>
+                        <input type="range" class="tempo-slider" min="40" max="240" value="120">
+                    </div>
+                </div>
+
+                <!-- Recording -->
+                <div class="recording-section">
+                    <button class="record-btn" data-instrument="piri">
+                        <span class="rec-icon">●</span> REC
+                    </button>
+                    <button class="playback-btn" data-instrument="piri" disabled>
+                        ▶ Play
+                    </button>
+                    <button class="download-btn" data-instrument="piri" disabled>
+                        ↓ MP3
+                    </button>
+                </div>
+            </div>
+
+            <!-- Piri Visual -->
+            <div class="instrument-visual">
+                <svg class="piri-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Piri body -->
+                    <rect x="50" y="45" width="300" height="30" rx="5" fill="#8B4513" />
+                    <rect x="40" y="40" width="30" height="40" rx="3" fill="#654321" /> <!-- Mouthpiece -->
+
+                    <!-- Finger holes -->
+                    <circle class="piri-hole" data-note="C4" cx="100" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="D4" cx="140" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="E4" cx="180" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="F4" cx="220" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="G4" cx="260" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="A4" cx="300" cy="60" r="8" fill="#2a2a2a" />
+                    <circle class="piri-hole" data-note="B4" cx="340" cy="60" r="8" fill="#2a2a2a" />
+
+                    <!-- Note labels -->
+                    <text x="100" y="95" text-anchor="middle" fill="#888" font-size="10">C4</text>
+                    <text x="140" y="95" text-anchor="middle" fill="#888" font-size="10">D4</text>
+                    <text x="180" y="95" text-anchor="middle" fill="#888" font-size="10">E4</text>
+                    <text x="220" y="95" text-anchor="middle" fill="#888" font-size="10">F4</text>
+                    <text x="260" y="95" text-anchor="middle" fill="#888" font-size="10">G4</text>
+                    <text x="300" y="95" text-anchor="middle" fill="#888" font-size="10">A4</text>
+                    <text x="340" y="95" text-anchor="middle" fill="#888" font-size="10">B4</text>
+                </svg>
+            </div>
+
+            <div class="instrument-controls" id="piri-controls">
+                <div class="note-buttons">
+                    <button class="note-btn" data-note="C4" data-key="A">
+                        <span class="note-name">C4</span>
+                        <span class="key-hint">A</span>
+                    </button>
+                    <button class="note-btn" data-note="D4" data-key="S">
+                        <span class="note-name">D4</span>
+                        <span class="key-hint">S</span>
+                    </button>
+                    <button class="note-btn" data-note="E4" data-key="D">
+                        <span class="note-name">E4</span>
+                        <span class="key-hint">D</span>
+                    </button>
+                    <button class="note-btn" data-note="F4" data-key="F">
+                        <span class="note-name">F4</span>
+                        <span class="key-hint">F</span>
+                    </button>
+                    <button class="note-btn" data-note="G4" data-key="G">
+                        <span class="note-name">G4</span>
+                        <span class="key-hint">G</span>
+                    </button>
+                    <button class="note-btn" data-note="A4" data-key="H">
+                        <span class="note-name">A4</span>
+                        <span class="key-hint">H</span>
+                    </button>
+                    <button class="note-btn" data-note="B4" data-key="J">
+                        <span class="note-name">B4</span>
+                        <span class="key-hint">J</span>
+                    </button>
+                    <button class="note-btn" data-note="C5" data-key="K">
+                        <span class="note-name">C5</span>
+                        <span class="key-hint">K</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Piri Info Section -->
+            <div class="instrument-info">
+                <div class="info-content">
+                    <div class="info-text">
+                        <h2>About the Piri</h2>
+                        <h3>What is it?</h3>
+                        <p>The piri (피리) is a Korean double-reed bamboo oboe, producing a distinctive nasal and penetrating tone. It consists of a cylindrical bamboo body with eight finger holes (seven on top, one on bottom) and a large double reed made from reed grass.</p>
+
+                        <h3>History</h3>
+                        <p>The piri originated from Central Asian instruments and was introduced to Korea during the Three Kingdoms period (57 BCE - 668 CE). It became integral to Korean court music (jeongak) and folk music traditions. Historical records from the Goryeo Dynasty (918-1392) document its prominent role in royal ceremonies.</p>
+
+                        <h3>Cultural Significance</h3>
+                        <p>The piri holds deep cultural meaning in Korea as the voice of emotion in traditional ensembles. Its haunting tone is said to express han (한) - a uniquely Korean concept of deep sorrow and longing. It leads melodic lines in court orchestras and accompanies shamanic rituals, folk songs, and traditional dance. The instrument is classified as an Important Intangible Cultural Property of Korea.</p>
+                    </div>
+                    <div class="info-images">
+                        <img src="images/piri-instrument.jpg" alt="Traditional Piri instrument" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Korea-Piri-01.jpg/220px-Korea-Piri-01.jpg'">
+                        <img src="images/piri-performance.jpg" alt="Piri being played in traditional performance" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Korean_music-Piri-01.jpg/220px-Korean_music-Piri-01.jpg'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Haegeum Page -->
+        <section id="haegeum-page" class="page">
+            <h1>Haegeum (해금) - Korean Bowed String</h1>
+            <p class="description">A two-stringed bowed instrument. Hold keys to sustain notes like a real bowed instrument.</p>
+
+            <div class="keyboard-guide">
+                <h3>Keyboard Mapping</h3>
+                <div class="key-info">Z X C V B N M , = Notes (G3 to D5)</div>
+            </div>
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <!-- Metronome -->
+                <div class="metronome-section">
+                    <button class="metronome-btn" id="haegeum-metronome-toggle">
+                        <span class="play-icon">▶</span>
+                        <span class="stop-icon" style="display:none">■</span>
+                    </button>
+                    <div class="tempo-control">
+                        <input type="number" class="tempo-input" min="40" max="240" value="120">
+                        <span class="bpm-label">BPM</span>
+                        <input type="range" class="tempo-slider" min="40" max="240" value="120">
+                    </div>
+                </div>
+
+                <!-- Recording -->
+                <div class="recording-section">
+                    <button class="record-btn" data-instrument="haegeum">
+                        <span class="rec-icon">●</span> REC
+                    </button>
+                    <button class="playback-btn" data-instrument="haegeum" disabled>
+                        ▶ Play
+                    </button>
+                    <button class="download-btn" data-instrument="haegeum" disabled>
+                        ↓ MP3
+                    </button>
+                </div>
+            </div>
+
+            <!-- Haegeum Visual -->
+            <div class="instrument-visual">
+                <svg class="haegeum-svg" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Haegeum body (horizontal) -->
+                    <rect x="20" y="35" width="80" height="50" rx="10" fill="#8B4513" /> <!-- Sound box -->
+                    <rect x="100" y="55" width="280" height="10" fill="#654321" /> <!-- Neck -->
+                    <circle cx="60" cy="60" r="15" fill="#654321" /> <!-- Sound hole area -->
+
+                    <!-- Strings -->
+                    <line x1="30" y1="50" x2="370" y2="50" stroke="#ddd" stroke-width="1" />
+                    <line x1="30" y1="70" x2="370" y2="70" stroke="#ddd" stroke-width="1" />
+
+                    <!-- String positions (notes) -->
+                    <circle class="haegeum-pos" data-note="G3" cx="100" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="A3" cx="140" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="B3" cx="180" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="C4" cx="220" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="D4" cx="260" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="E4" cx="300" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="F4" cx="340" cy="60" r="6" fill="#3a3a5c" />
+                    <circle class="haegeum-pos" data-note="G4" cx="380" cy="60" r="6" fill="#3a3a5c" />
+
+                    <!-- Note labels -->
+                    <text x="100" y="95" text-anchor="middle" fill="#888" font-size="10">G3</text>
+                    <text x="140" y="95" text-anchor="middle" fill="#888" font-size="10">A3</text>
+                    <text x="180" y="95" text-anchor="middle" fill="#888" font-size="10">B3</text>
+                    <text x="220" y="95" text-anchor="middle" fill="#888" font-size="10">C4</text>
+                    <text x="260" y="95" text-anchor="middle" fill="#888" font-size="10">D4</text>
+                    <text x="300" y="95" text-anchor="middle" fill="#888" font-size="10">E4</text>
+                    <text x="340" y="95" text-anchor="middle" fill="#888" font-size="10">F4</text>
+                    <text x="380" y="95" text-anchor="middle" fill="#888" font-size="10">G4</text>
+                </svg>
+            </div>
+
+            <div class="instrument-controls" id="haegeum-controls">
+                <div class="note-buttons">
+                    <button class="note-btn haegeum" data-note="G3" data-key="Z">
+                        <span class="note-name">G3</span>
+                        <span class="key-hint">Z</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="A3" data-key="X">
+                        <span class="note-name">A3</span>
+                        <span class="key-hint">X</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="B3" data-key="C">
+                        <span class="note-name">B3</span>
+                        <span class="key-hint">C</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="C4" data-key="V">
+                        <span class="note-name">C4</span>
+                        <span class="key-hint">V</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="D4" data-key="B">
+                        <span class="note-name">D4</span>
+                        <span class="key-hint">B</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="E4" data-key="N">
+                        <span class="note-name">E4</span>
+                        <span class="key-hint">N</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="F4" data-key="M">
+                        <span class="note-name">F4</span>
+                        <span class="key-hint">M</span>
+                    </button>
+                    <button class="note-btn haegeum" data-note="G4" data-key=",">
+                        <span class="note-name">G4</span>
+                        <span class="key-hint">,</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Haegeum Info Section -->
+            <div class="instrument-info">
+                <div class="info-content">
+                    <div class="info-text">
+                        <h2>About the Haegeum</h2>
+                        <h3>What is it?</h3>
+                        <p>The haegeum (해금) is a two-stringed vertical fiddle with a rodlike neck and hollow wooden soundbox. It uses a rosined bow made of forsythia wood and horsehair, played by drawing the bow between its two silk strings. The instrument has no fingerboard - the player stops the strings by pressing with their fingernails.</p>
+
+                        <h3>History</h3>
+                        <p>The haegeum descended from the Chinese erhu and Central Asian fiddles, entering Korea during the Goryeo Dynasty (918-1392). Originally used in military processions, it evolved to become essential in both court and folk music. The Akhak Gwebeom (1493), a Korean musical treatise, provides detailed documentation of the instrument's construction and playing techniques.</p>
+
+                        <h3>Cultural Significance</h3>
+                        <p>The haegeum is often called the instrument that "speaks" in Korean music due to its vocal-like quality. It can express the full range of human emotions, from profound sorrow to joyful celebration. In pansori (epic storytelling through song), it provides crucial accompaniment. The haegeum bridges court and folk traditions, appearing in royal ancestral rites and village festivals alike. It represents the Korean aesthetic of "sound that breathes."</p>
+                    </div>
+                    <div class="info-images">
+                        <img src="images/haegeum-instrument.jpg" alt="Traditional Haegeum instrument" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Haegeum.jpg/220px-Haegeum.jpg'">
+                        <img src="images/haegeum-performance.jpg" alt="Haegeum being played" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Korea-Haegeum-01.jpg/220px-Korea-Haegeum-01.jpg'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Janggu Page -->
+        <section id="janggu-page" class="page">
+            <h1>Janggu (장구) - Korean Hourglass Drum</h1>
+            <p class="description">Traditional double-headed drum. Left side (궁편) produces deep bass, right side (채편) produces sharp tones.</p>
+
+            <div class="keyboard-guide">
+                <h3>Keyboard Mapping</h3>
+                <div class="key-info">
+                    Q = 쿵 (Kung - deep bass) | W = 덕 (Duk - mid tone) | E = 기덕 (Gideok - light bass)<br>
+                    I = 딱 (Tak - sharp) | O = 따 (Tta - accent) | P = 러러러 (Roll)
+                </div>
+            </div>
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <!-- Metronome -->
+                <div class="metronome-section">
+                    <button class="metronome-btn" id="janggu-metronome-toggle">
+                        <span class="play-icon">▶</span>
+                        <span class="stop-icon" style="display:none">■</span>
+                    </button>
+                    <div class="tempo-control">
+                        <input type="number" class="tempo-input" min="40" max="240" value="120">
+                        <span class="bpm-label">BPM</span>
+                        <input type="range" class="tempo-slider" min="40" max="240" value="120">
+                    </div>
+                </div>
+
+                <!-- Recording -->
+                <div class="recording-section">
+                    <button class="record-btn" data-instrument="janggu">
+                        <span class="rec-icon">●</span> REC
+                    </button>
+                    <button class="playback-btn" data-instrument="janggu" disabled>
+                        ▶ Play
+                    </button>
+                    <button class="download-btn" data-instrument="janggu" disabled>
+                        ↓ MP3
+                    </button>
+                </div>
+            </div>
+
+            <!-- Janggu Visual -->
+            <div class="instrument-visual">
+                <svg class="janggu-svg" viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Janggu hourglass body -->
+                    <ellipse cx="80" cy="75" rx="60" ry="50" fill="#8B4513" /> <!-- Left drum head -->
+                    <ellipse cx="320" cy="75" rx="60" ry="50" fill="#8B4513" /> <!-- Right drum head -->
+                    <path d="M 80 25 Q 200 60 320 25 L 320 125 Q 200 90 80 125 Z" fill="#654321" /> <!-- Body -->
+
+                    <!-- Drum head surfaces -->
+                    <ellipse class="janggu-head left-head" data-sounds="kung,duk,gideok" cx="80" cy="75" rx="45" ry="35" fill="#d4a373" />
+                    <ellipse class="janggu-head right-head" data-sounds="tak,tta,roll" cx="320" cy="75" rx="45" ry="35" fill="#a0a0a0" />
+
+                    <!-- Labels -->
+                    <text x="80" y="80" text-anchor="middle" fill="#654321" font-size="12" font-weight="bold">궁편</text>
+                    <text x="320" y="80" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">채편</text>
+                    <text x="80" y="140" text-anchor="middle" fill="#888" font-size="10">Bass (Q W E)</text>
+                    <text x="320" y="140" text-anchor="middle" fill="#888" font-size="10">Sharp (I O P)</text>
+                </svg>
+            </div>
+
+            <div class="instrument-controls" id="janggu-controls">
+                <div class="janggu-layout">
+                    <div class="drum-side left-side">
+                        <h3>궁편 (Left - Bass)</h3>
+                        <div class="note-buttons">
+                            <button class="note-btn janggu bass" data-sound="kung" data-key="Q">
+                                <span class="note-name">쿵</span>
+                                <span class="key-hint">Q</span>
+                            </button>
+                            <button class="note-btn janggu bass" data-sound="duk" data-key="W">
+                                <span class="note-name">덕</span>
+                                <span class="key-hint">W</span>
+                            </button>
+                            <button class="note-btn janggu bass" data-sound="gideok" data-key="E">
+                                <span class="note-name">기덕</span>
+                                <span class="key-hint">E</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="drum-side right-side">
+                        <h3>채편 (Right - Sharp)</h3>
+                        <div class="note-buttons">
+                            <button class="note-btn janggu sharp" data-sound="tak" data-key="I">
+                                <span class="note-name">딱</span>
+                                <span class="key-hint">I</span>
+                            </button>
+                            <button class="note-btn janggu sharp" data-sound="tta" data-key="O">
+                                <span class="note-name">따</span>
+                                <span class="key-hint">O</span>
+                            </button>
+                            <button class="note-btn janggu sharp" data-sound="roll" data-key="P">
+                                <span class="note-name">러러러</span>
+                                <span class="key-hint">P</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Janggu Info Section -->
+            <div class="instrument-info">
+                <div class="info-content">
+                    <div class="info-text">
+                        <h2>About the Janggu</h2>
+                        <h3>What is it?</h3>
+                        <p>The janggu (장구), also called janggo, is an hourglass-shaped double-headed drum. Its distinctive shape creates two different sound chambers: the left head (궁편) is covered with thick cowhide for deep bass tones, while the right head (채편) uses thinner horsehide or dogskin for sharp, high-pitched sounds. Players use a round wooden mallet on the left and a thin bamboo stick on the right.</p>
+
+                        <h3>History</h3>
+                        <p>The janggu arrived in Korea from China during the Three Kingdoms period, with earliest records dating to the 7th century. It became the rhythmic backbone of Korean music by the Goryeo Dynasty. The instrument's name comes from the Chinese "zhanggu" (杖鼓). Over centuries, it evolved from a court instrument to an essential part of folk music, farmers' music (nongak), and shamanic ceremonies.</p>
+
+                        <h3>Cultural Significance</h3>
+                        <p>The janggu is considered the heartbeat of Korean traditional music, controlling tempo and providing the rhythmic foundation for all ensemble performances. Its two contrasting voices symbolize the harmony of opposites in Korean philosophy - yin and yang, earth and heaven. It is indispensable in samulnori (percussion ensemble), pungmul (farmers' dance), and court music. Learning janggu rhythm patterns (jangdan) is fundamental to understanding Korean musical structure. The instrument represents Korea's vibrant rhythmic heritage and communal spirit.</p>
+                    </div>
+                    <div class="info-images">
+                        <img src="images/janggu-instrument.jpg" alt="Traditional Janggu drum" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Janggu.jpg/220px-Janggu.jpg'">
+                        <img src="images/janggu-performance.jpg" alt="Janggu being played in performance" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Korea-Busan-Nongak-01.jpg/220px-Korea-Busan-Nongak-01.jpg'">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="temp.js"></script>
+</body>
+</html>
