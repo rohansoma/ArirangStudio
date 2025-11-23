@@ -18,7 +18,7 @@ async function loadPiriSample() {
             initAudioContext();
         }
         
-        console.log('🔄 Loading piri sample from: sounds/KoreanPiriNOTE.mp3');
+        console.log('Loading piri sample from: sounds/KoreanPiriNOTE.mp3');
         
         const response = await fetch('sounds/KoreanPiriNOTE.mp3');
         
@@ -26,20 +26,20 @@ async function loadPiriSample() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        console.log('✅ Fetch successful, decoding audio...');
+        console.log('Fetch successful, decoding audio...');
         const arrayBuffer = await response.arrayBuffer();
         
-        console.log(`📦 Array buffer size: ${arrayBuffer.byteLength} bytes`);
+        console.log(`Array buffer size: ${arrayBuffer.byteLength} bytes`);
         piriSample.buffer = await audioContext.decodeAudioData(arrayBuffer);
         piriSample.isLoaded = true;
         
-        console.log('✅ Piri sample loaded successfully!');
+        console.log('Piri sample loaded successfully!');
         console.log(`   Duration: ${piriSample.buffer.duration.toFixed(2)}s`);
         console.log(`   Sample rate: ${piriSample.buffer.sampleRate}Hz`);
         console.log(`   Base note: C5 (${piriSample.baseFrequency} Hz)`);
         return true;
     } catch (error) {
-        console.error('❌ Error loading piri sample:', error);
+        console.error('Error loading piri sample:', error);
         console.error('   Make sure the file exists at: sounds/KoreanPiriNOTE.mp3');
         console.error('   Check the browser console Network tab for the actual error');
         return false;
@@ -150,11 +150,11 @@ function initAudioContext() {
         const AudioContextClass = window.AudioContext || window['webkitAudioContext'];
         // Force standard sample rate for consistent recording/playback
         audioContext = new AudioContextClass({ sampleRate: 44100 });
-        console.log('🎵 Audio context initialized at 44100 Hz');
+        console.log('Audio context initialized at 44100 Hz');
     }
     if (audioContext.state === 'suspended') {
         audioContext.resume();
-        console.log('▶️  Audio context resumed');
+        console.log('Audio context resumed');
     }
 }
 
@@ -163,7 +163,7 @@ function createPiriTone(frequency) {
     initAudioContext();
 
     if (!piriSample.isLoaded) {
-        console.error('❌ Piri sample not loaded yet. Attempting to load...');
+        console.error('Piri sample not loaded yet. Attempting to load...');
         loadPiriSample(); // Try to load it now
         return null;
     }
@@ -178,7 +178,7 @@ function createPiriTone(frequency) {
     const playbackRate = frequency / piriSample.baseFrequency;
     source.playbackRate.setValueAtTime(playbackRate, now);
 
-    console.log(`🎵 Playing piri at ${frequency.toFixed(2)}Hz (playback rate: ${playbackRate.toFixed(3)})`);
+    console.log(`Playing piri at ${frequency.toFixed(2)}Hz (playback rate: ${playbackRate.toFixed(3)})`);
 
     // Enable looping for sustained notes
     source.loop = true;
@@ -545,6 +545,11 @@ document.addEventListener('keydown', (e) => {
     const mapping = KEY_MAPPINGS[key];
     if (mapping) {
         const { instrument, note } = mapping;
+
+        // Only play if the corresponding instrument page is active
+        const activePage = document.querySelector('.page.active');
+        if (!activePage || activePage.id !== `${instrument}-page`) return;
+
         const button = document.querySelector(`[data-key="${key.toUpperCase()}"], [data-key="${key}"]`);
         playNote(instrument, note, button);
     }
@@ -557,6 +562,11 @@ document.addEventListener('keyup', (e) => {
     const mapping = KEY_MAPPINGS[key];
     if (mapping) {
         const { instrument, note } = mapping;
+
+        // Only stop if the corresponding instrument page is active
+        const activePage = document.querySelector('.page.active');
+        if (!activePage || activePage.id !== `${instrument}-page`) return;
+
         const button = document.querySelector(`[data-key="${key.toUpperCase()}"], [data-key="${key}"]`);
         stopNote(instrument, note, button);
     }
